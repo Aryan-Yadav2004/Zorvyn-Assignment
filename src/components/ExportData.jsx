@@ -14,30 +14,32 @@ export default function ExportData() {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-      <div className="flex items-center gap-2 mb-4">
-        <Download size={20} className="text-gray-600 dark:text-gray-400" />
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Export Data</h3>
+    <div className="bg-gradient-to-r from-slate-50 to-primary-50 dark:from-slate-900/50 dark:to-primary-900/20 p-6 rounded-xl shadow-md border border-slate-200 dark:border-slate-700">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="p-2.5 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
+          <Download size={20} className="text-primary-600 dark:text-primary-400" />
+        </div>
+        <h3 className="text-lg font-bold text-slate-900 dark:text-white">Export Data</h3>
       </div>
 
-      <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-        Export your transactions for backup or analysis
+      <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+        Download your transactions for backup or external analysis
       </p>
 
       <div className="flex gap-3">
         <button
           onClick={handleExportCSV}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+          className="flex items-center gap-2 px-4 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium text-sm shadow-md hover:shadow-lg transition-all"
         >
           <FileText size={18} />
-          Export as CSV
+          Export CSV
         </button>
         <button
           onClick={handleExportJSON}
-          className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
+          className="flex items-center gap-2 px-4 py-2.5 bg-warning-600 hover:bg-warning-700 text-white rounded-lg font-medium text-sm shadow-md hover:shadow-lg transition-all"
         >
           <FileJson size={18} />
-          Export as JSON
+          Export JSON
         </button>
       </div>
     </div>

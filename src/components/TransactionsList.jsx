@@ -1,4 +1,4 @@
-import { Trash2, Edit } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { formatCurrency, formatDate } from '../utils/calculations';
 import { useFinanceStore } from '../store/financeStore';
@@ -9,7 +9,6 @@ export default function TransactionsList() {
   );
   const currentRole = useFinanceStore(state => state.currentRole);
   const deleteTransaction = useFinanceStore(state => state.deleteTransaction);
-  const [editingId, setEditingId] = useState(null);
 
   const handleDelete = (id) => {
     if (window.confirm('Are you sure you want to delete this transaction?')) {
@@ -19,68 +18,77 @@ export default function TransactionsList() {
 
   if (transactions.length === 0) {
     return (
-      <div className="text-center py-12">
-        <p className="text-gray-500 dark:text-gray-400">No transactions found</p>
+      <div className="text-center py-16">
+        <div className="inline-flex items-center justify-center w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full mb-4">
+          <span className="text-2xl">📭</span>
+        </div>
+        <p className="text-slate-500 dark:text-slate-400 font-medium">No transactions found</p>
+        <p className="text-sm text-slate-400 dark:text-slate-500 mt-1">Try adjusting your filters</p>
       </div>
     );
   }
 
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full text-sm">
+    <div className="overflow-hidden">
+      <table className="w-full">
         <thead>
-          <tr className="border-b border-gray-200 dark:border-gray-700">
-            <th className="text-left p-4 font-semibold text-gray-700 dark:text-gray-300">
+          <tr className="border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
+            <th className="text-left px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 text-sm">
               Date
             </th>
-            <th className="text-left p-4 font-semibold text-gray-700 dark:text-gray-300">
+            <th className="text-left px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 text-sm">
               Category
             </th>
-            <th className="text-left p-4 font-semibold text-gray-700 dark:text-gray-300">
+            <th className="text-left px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 text-sm">
               Type
             </th>
-            <th className="text-right p-4 font-semibold text-gray-700 dark:text-gray-300">
+            <th className="text-right px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 text-sm">
               Amount
             </th>
             {currentRole === 'admin' && (
-              <th className="text-center p-4 font-semibold text-gray-700 dark:text-gray-300">
-                Actions
+              <th className="text-center px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 text-sm">
+                Action
               </th>
             )}
           </tr>
         </thead>
-        <tbody>
-          {transactions.map(transaction => (
+        <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+          {transactions.map((transaction) => (
             <tr
               key={transaction.id}
-              className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+              className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
             >
-              <td className="p-4">{formatDate(transaction.date)}</td>
-              <td className="p-4">{transaction.category}</td>
-              <td className="p-4">
+              <td className="px-6 py-4 text-sm text-slate-900 dark:text-slate-100 font-medium">
+                {formatDate(transaction.date)}
+              </td>
+              <td className="px-6 py-4 text-sm text-slate-900 dark:text-slate-100">
+                {transaction.category}
+              </td>
+              <td className="px-6 py-4 text-sm">
                 <span
-                  className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
+                  className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${
                     transaction.type === 'income'
-                      ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100'
-                      : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100'
+                      ? 'bg-success-100 text-success-700 dark:bg-success-900/30 dark:text-success-400'
+                      : 'bg-danger-100 text-danger-700 dark:bg-danger-900/30 dark:text-danger-400'
                   }`}
                 >
-                  {transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1)}
+                  {transaction.type === 'income' ? '↓ Income' : '↑ Expense'}
                 </span>
               </td>
-              <td className={`p-4 text-right font-semibold ${
+              <td className={`px-6 py-4 text-right text-sm font-bold ${
                 transaction.type === 'income'
-                  ? 'text-green-600 dark:text-green-400'
-                  : 'text-red-600 dark:text-red-400'
+                  ? 'text-success-600 dark:text-success-400'
+                  : 'text-danger-600 dark:text-danger-400'
               }`}>
                 {transaction.type === 'income' ? '+' : '-'}
                 {formatCurrency(transaction.amount)}
               </td>
               {currentRole === 'admin' && (
-                <td className="p-4 text-center">
+                <td className="px-6 py-4 text-center">
                   <button
                     onClick={() => handleDelete(transaction.id)}
-                    className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 transition"
+                    className="inline-flex items-center justify-center p-2 text-danger-600 dark:text-danger-400 hover:bg-danger-50 dark:hover:bg-danger-900/20 rounded-lg transition-colors"
+                    title="Delete transaction"
                   >
                     <Trash2 size={18} />
                   </button>

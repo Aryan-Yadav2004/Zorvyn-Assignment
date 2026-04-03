@@ -53,12 +53,18 @@ export default function App() {
   const monthlyBalance = getMonthlyBalance(transactions);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors">
       <Header onAddTransaction={() => setIsAddModalOpen(true)} />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-8 space-y-8">
+        {/* Welcome Section */}
+        <div className="animate-fadeIn">
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Welcome back!</h1>
+          <p className="text-slate-600 dark:text-slate-400 mt-1">Here's your dynamic financial overview</p>
+        </div>
+
         {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 animate-fadeIn">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fadeIn">
           <SummaryCard
             label="Total Balance"
             amount={totalBalance}
@@ -80,53 +86,60 @@ export default function App() {
         </div>
 
         {/* Charts Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-shadow">
+            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-6">
               Balance Trend
             </h2>
             {monthlyBalance.length > 0 ? (
               <BalanceTrendChart data={monthlyBalance} />
             ) : (
-              <p className="text-gray-500 dark:text-gray-400">No data available</p>
+              <div className="h-80 flex items-center justify-center text-slate-500 dark:text-slate-400">
+                <p className="text-center">No data available</p>
+              </div>
             )}
           </div>
 
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+          <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-shadow">
+            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-6">
               Spending Breakdown
             </h2>
             {spendingByCategory.length > 0 ? (
               <SpendingBreakdownChart data={spendingByCategory} />
             ) : (
-              <p className="text-gray-500 dark:text-gray-400">No expense data available</p>
+              <div className="h-80 flex items-center justify-center text-slate-500 dark:text-slate-400">
+                <p className="text-center">No expense data available</p>
+              </div>
             )}
           </div>
         </div>
 
         {/* Insights Section */}
-        <section className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+        <section>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">
             Insights
           </h2>
           <Insights />
         </section>
 
-        {/* Export Section */}
-        <section className="mb-8">
+        {/* Export & Filters Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <FilterBar />
+          </div>
           <ExportData />
-        </section>
-
-        {/* Filters */}
-        <section className="mb-8">
-          <FilterBar />
-        </section>
+        </div>
 
         {/* Transactions Section */}
-        <section className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-            Transactions
-          </h2>
+        <section className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+              Recent Transactions
+            </h2>
+            <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+              {transactions.length} transaction{transactions.length !== 1 ? 's' : ''} total
+            </p>
+          </div>
           <TransactionsList />
         </section>
       </main>
