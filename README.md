@@ -202,7 +202,7 @@ The application includes pre-populated mock data covering:
 
 You can modify mock data in `src/store/financeStore.js`
 
-## 🔄 State Management with Zustand
+##  State Management with Zustand
 
 The store manages:
 - **Transactions**: Full list of all transactions
