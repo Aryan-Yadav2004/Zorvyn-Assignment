@@ -1,7 +1,6 @@
 import { Trash2 } from 'lucide-react';
-import { useState } from 'react';
 import { formatCurrency, formatDate } from '../utils/calculations';
-import { useFinanceStore } from '../store/financeStore';
+import { useFinanceStore, categoryEmojis } from '../store/financeStore';
 
 export default function TransactionsList() {
   const transactions = useFinanceStore(state =>
@@ -34,10 +33,10 @@ export default function TransactionsList() {
         <thead>
           <tr className="border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
             <th className="text-left px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 text-sm">
-              Date
+              Category
             </th>
             <th className="text-left px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 text-sm">
-              Category
+              Date
             </th>
             <th className="text-left px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 text-sm">
               Type
@@ -53,49 +52,57 @@ export default function TransactionsList() {
           </tr>
         </thead>
         <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-          {transactions.map((transaction) => (
-            <tr
-              key={transaction.id}
-              className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
-            >
-              <td className="px-6 py-4 text-sm text-slate-900 dark:text-slate-100 font-medium">
-                {formatDate(transaction.date)}
-              </td>
-              <td className="px-6 py-4 text-sm text-slate-900 dark:text-slate-100">
-                {transaction.category}
-              </td>
-              <td className="px-6 py-4 text-sm">
-                <span
-                  className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${
-                    transaction.type === 'income'
-                      ? 'bg-success-100 text-success-700 dark:bg-success-900/30 dark:text-success-400'
-                      : 'bg-danger-100 text-danger-700 dark:bg-danger-900/30 dark:text-danger-400'
-                  }`}
-                >
-                  {transaction.type === 'income' ? '↓ Income' : '↑ Expense'}
-                </span>
-              </td>
-              <td className={`px-6 py-4 text-right text-sm font-bold ${
-                transaction.type === 'income'
-                  ? 'text-success-600 dark:text-success-400'
-                  : 'text-danger-600 dark:text-danger-400'
-              }`}>
-                {transaction.type === 'income' ? '+' : '-'}
-                {formatCurrency(transaction.amount)}
-              </td>
-              {currentRole === 'admin' && (
-                <td className="px-6 py-4 text-center">
-                  <button
-                    onClick={() => handleDelete(transaction.id)}
-                    className="inline-flex items-center justify-center p-2 text-danger-600 dark:text-danger-400 hover:bg-danger-50 dark:hover:bg-danger-900/20 rounded-lg transition-colors"
-                    title="Delete transaction"
-                  >
-                    <Trash2 size={18} />
-                  </button>
+          {transactions.map((transaction) => {
+            const emoji = categoryEmojis[transaction.category] || '💳';
+            return (
+              <tr
+                key={transaction.id}
+                className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+              >
+                <td className="px-6 py-4 text-sm">
+                  <div className="flex items-center gap-3">
+                    <span className="text-xl">{emoji}</span>
+                    <span className="text-slate-900 dark:text-slate-100 font-medium">
+                      {transaction.category}
+                    </span>
+                  </div>
                 </td>
-              )}
-            </tr>
-          ))}
+                <td className="px-6 py-4 text-sm text-slate-900 dark:text-slate-100 font-medium">
+                  {formatDate(transaction.date)}
+                </td>
+                <td className="px-6 py-4 text-sm">
+                  <span
+                    className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${
+                      transaction.type === 'income'
+                        ? 'bg-success-100 text-success-700 dark:bg-success-900/30 dark:text-success-400'
+                        : 'bg-danger-100 text-danger-700 dark:bg-danger-900/30 dark:text-danger-400'
+                    }`}
+                  >
+                    {transaction.type === 'income' ? '↓ Income' : '↑ Expense'}
+                  </span>
+                </td>
+                <td className={`px-6 py-4 text-right text-sm font-bold ${
+                  transaction.type === 'income'
+                    ? 'text-success-600 dark:text-success-400'
+                    : 'text-danger-600 dark:text-danger-400'
+                }`}>
+                  {transaction.type === 'income' ? '+' : '-'}
+                  {formatCurrency(transaction.amount)}
+                </td>
+                {currentRole === 'admin' && (
+                  <td className="px-6 py-4 text-center">
+                    <button
+                      onClick={() => handleDelete(transaction.id)}
+                      className="inline-flex items-center justify-center p-2 text-danger-600 dark:text-danger-400 hover:bg-danger-50 dark:hover:bg-danger-900/20 rounded-lg transition-colors"
+                      title="Delete transaction"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </td>
+                )}
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

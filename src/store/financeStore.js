@@ -1,7 +1,23 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-// Mock data
+// Category emoji mapping
+export const categoryEmojis = {
+  'Salary': '💰',
+  'Freelance Work': '💼',
+  'Groceries': '🛒',
+  'Transportation': '🚗',
+  'Rent': '🏠',
+  'Entertainment': '🎬',
+  'Utilities': '💡',
+  'Dining': '🍽️',
+  'Shopping': '🛍️',
+  'Education': '📚',
+  'Healthcare': '🏥',
+  'Food & Dining': '🍽️',
+};
+
+// Mock data with emoji support
 const mockTransactions = [
   { id: 1, date: '2024-03-20', amount: 2500, category: 'Salary', type: 'income' },
   { id: 2, date: '2024-03-18', amount: 150, category: 'Groceries', type: 'expense' },
@@ -32,6 +48,8 @@ export const useFinanceStore = create(
       },
       currentRole: 'viewer',
       darkMode: false,
+      chartPeriod: '6M',
+      activeSection: 'overview',
 
       addTransaction: (transaction) =>
         set((state) => ({
@@ -111,6 +129,10 @@ export const useFinanceStore = create(
         const state = get();
         return [...new Set(state.transactions.map(t => t.category))];
       },
+
+      setChartPeriod: (period) => set({ chartPeriod: period }),
+
+      setActiveSection: (section) => set({ activeSection: section }),
     }),
     {
       name: 'finance-dashboard-store',

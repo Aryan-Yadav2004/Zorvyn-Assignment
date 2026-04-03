@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useFinanceStore } from './store/financeStore';
 import Header from './components/Header';
+import Sidebar from './components/Sidebar';
 import SummaryCard from './components/SummaryCard';
 import { BalanceTrendChart, SpendingBreakdownChart } from './components/Charts';
+import ChartPeriodSelector from './components/ChartPeriodSelector';
 import FilterBar from './components/FilterBar';
 import TransactionsList from './components/TransactionsList';
 import AddTransactionModal from './components/AddTransactionModal';
 import Insights from './components/Insights';
 import ExportData from './components/ExportData';
+import RecentTransactionsPreview from './components/RecentTransactionsPreview';
 import {
   calculateTotalBalance,
   calculateTotalIncome,
@@ -21,6 +24,7 @@ export default function App() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const transactions = useFinanceStore(state => state.transactions);
   const darkMode = useFinanceStore(state => state.darkMode);
+  const activeSection = useFinanceStore(state => state.activeSection);
 
   useEffect(() => {
     // Apply dark mode on mount
@@ -55,93 +59,159 @@ export default function App() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors">
       <Header onAddTransaction={() => setIsAddModalOpen(true)} />
+      <Sidebar />
 
-      <main className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-8 space-y-8">
-        {/* Welcome Section */}
-        <div className="animate-fadeIn">
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Welcome back!</h1>
-          <p className="text-slate-600 dark:text-slate-400 mt-1">Here's your dynamic financial overview</p>
-        </div>
+      {/* Main content with sidebar offset */}
+      <main className="lg:ml-64">
+        {/* Overview Section */}
+        {activeSection === 'overview' && (
+          <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-8 space-y-8">
+            {/* Welcome Section */}
+            <div className="animate-fadeIn">
+              <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Welcome back!</h1>
+              <p className="text-slate-600 dark:text-slate-400 mt-1">Here's your dynamic financial overview</p>
+            </div>
 
-        {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fadeIn">
-          <SummaryCard
-            label="Total Balance"
-            amount={totalBalance}
-            type="balance"
-            icon={Wallet}
-          />
-          <SummaryCard
-            label="Total Income"
-            amount={totalIncome}
-            type="income"
-            icon={TrendingUp}
-          />
-          <SummaryCard
-            label="Total Expenses"
-            amount={totalExpenses}
-            type="expense"
-            icon={TrendingDown}
-          />
-        </div>
+            {/* Summary Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fadeIn">
+              <SummaryCard
+                label="Total Balance"
+                amount={totalBalance}
+                type="balance"
+                icon={Wallet}
+              />
+              <SummaryCard
+                label="Total Income"
+                amount={totalIncome}
+                type="income"
+                icon={TrendingUp}
+              />
+              <SummaryCard
+                label="Total Expenses"
+                amount={totalExpenses}
+                type="expense"
+                icon={TrendingDown}
+              />
+            </div>
 
-        {/* Charts Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-shadow">
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-6">
-              Balance Trend
-            </h2>
-            {monthlyBalance.length > 0 ? (
-              <BalanceTrendChart data={monthlyBalance} />
-            ) : (
-              <div className="h-80 flex items-center justify-center text-slate-500 dark:text-slate-400">
-                <p className="text-center">No data available</p>
+            {/* Charts Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-lg font-bold text-slate-900 dark:text-white">
+                    Balance Trend
+                  </h2>
+                  <ChartPeriodSelector />
+                </div>
+                {monthlyBalance.length > 0 ? (
+                  <BalanceTrendChart data={monthlyBalance} />
+                ) : (
+                  <div className="h-80 flex items-center justify-center text-slate-500 dark:text-slate-400">
+                    <p className="text-center">No data available</p>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
 
-          <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-shadow">
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-6">
-              Spending Breakdown
-            </h2>
-            {spendingByCategory.length > 0 ? (
-              <SpendingBreakdownChart data={spendingByCategory} />
-            ) : (
-              <div className="h-80 flex items-center justify-center text-slate-500 dark:text-slate-400">
-                <p className="text-center">No expense data available</p>
+              <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-shadow">
+                <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-6">
+                  Spending Breakdown
+                </h2>
+                {spendingByCategory.length > 0 ? (
+                  <SpendingBreakdownChart data={spendingByCategory} />
+                ) : (
+                  <div className="h-80 flex items-center justify-center text-slate-500 dark:text-slate-400">
+                    <p className="text-center">No expense data available</p>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        </div>
+            </div>
 
-        {/* Insights Section */}
-        <section>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">
-            Insights
-          </h2>
-          <Insights />
-        </section>
+            {/* Recent Transactions Preview */}
+            <RecentTransactionsPreview />
 
-        {/* Export & Filters Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
-            <FilterBar />
+            {/* Insights Section */}
+            <section>
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">
+                Insights
+              </h2>
+              <Insights />
+            </section>
           </div>
-          <ExportData />
-        </div>
+        )}
 
         {/* Transactions Section */}
-        <section className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-              Recent Transactions
-            </h2>
-            <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-              {transactions.length} transaction{transactions.length !== 1 ? 's' : ''} total
-            </p>
+        {activeSection === 'transactions' && (
+          <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-8 space-y-8">
+            <div className="animate-fadeIn">
+              <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Transactions</h1>
+              <p className="text-slate-600 dark:text-slate-400 mt-1">View and manage all your transactions</p>
+            </div>
+
+            {/* Filters */}
+            <section>
+              <FilterBar />
+            </section>
+
+            {/* Transactions List */}
+            <section className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+              <div className="mb-6">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+                  All Transactions
+                </h2>
+                <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                  {transactions.length} transaction{transactions.length !== 1 ? 's' : ''} total
+                </p>
+              </div>
+              <TransactionsList />
+            </section>
+
+            {/* Export Section */}
+            <section>
+              <ExportData />
+            </section>
           </div>
-          <TransactionsList />
-        </section>
+        )}
+
+        {/* Insights Section */}
+        {activeSection === 'insights' && (
+          <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-8 space-y-8">
+            <div className="animate-fadeIn">
+              <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Insights</h1>
+              <p className="text-slate-600 dark:text-slate-400 mt-1">Understand your spending patterns</p>
+            </div>
+
+            <Insights />
+
+            {/* Charts for insights section */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-shadow">
+                <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-6">
+                  Balance Trend
+                </h2>
+                {monthlyBalance.length > 0 ? (
+                  <BalanceTrendChart data={monthlyBalance} />
+                ) : (
+                  <div className="h-80 flex items-center justify-center text-slate-500 dark:text-slate-400">
+                    <p className="text-center">No data available</p>
+                  </div>
+                )}
+              </div>
+
+              <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-shadow">
+                <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-6">
+                  Spending Breakdown
+                </h2>
+                {spendingByCategory.length > 0 ? (
+                  <SpendingBreakdownChart data={spendingByCategory} />
+                ) : (
+                  <div className="h-80 flex items-center justify-center text-slate-500 dark:text-slate-400">
+                    <p className="text-center">No expense data available</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </main>
 
       {/* Add Transaction Modal */}
