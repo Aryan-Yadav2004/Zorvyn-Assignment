@@ -2,7 +2,7 @@
 
 A clean, interactive, and responsive finance dashboard built with React, Vite, and Tailwind CSS. This project demonstrates modern frontend development practices with comprehensive state management, data visualization, and role-based access control.
 
-## 🎯 Features
+##  Features
 
 ### Core Features
 - **Dashboard Overview**: Summary cards displaying total balance, income, and expenses
@@ -23,14 +23,14 @@ A clean, interactive, and responsive finance dashboard built with React, Vite, a
   - Average transaction amount
 
 ### Enhancements
-- ✨ **Dark Mode**: Toggle between light and dark themes with smooth transitions
-- 💾 **Data Persistence**: LocalStorage integration to save all data and preferences
-- 📊 **Data Export**: Export transactions as CSV or JSON for external analysis
-- 🎨 **Animations**: Smooth fade-in effects and hover transitions
-- 📱 **Responsive Design**: Works seamlessly on mobile, tablet, and desktop screens
-- 🎯 **Empty State Handling**: Graceful handling when no data is available
+-  **Dark Mode**: Toggle between light and dark themes with smooth transitions
+-  **Data Persistence**: LocalStorage integration to save all data and preferences
+-  **Data Export**: Export transactions as CSV or JSON for external analysis
+-  **Animations**: Smooth fade-in effects and hover transitions
+-  **Responsive Design**: Works seamlessly on mobile, tablet, and desktop screens
+-  **Empty State Handling**: Graceful handling when no data is available
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 - **Frontend Framework**: React 18
 - **Build Tool**: Vite
@@ -40,7 +40,7 @@ A clean, interactive, and responsive finance dashboard built with React, Vite, a
 - **Icons**: Lucide React
 - **Package Manager**: npm
 
-## 📋 Project Structure
+##  Project Structure
 
 ```
 finance-dashboard/
@@ -71,7 +71,7 @@ finance-dashboard/
 └── README.md                            # This file
 ```
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - Node.js (v16 or higher)
@@ -103,7 +103,7 @@ The application will automatically open at `http://localhost:5173`
 - `npm run preview` - Preview production build locally
 - `npm run lint` - Run ESLint (if configured)
 
-## 📊 Features in Detail
+##  Features in Detail
 
 ### Dashboard Overview
 The main dashboard displays three key summary cards:
@@ -162,7 +162,7 @@ Export data in two formats:
 - Smooth color transitions between themes
 - All components fully styled for both modes
 
-## 💾 Data Persistence
+##  Data Persistence
 
 The application uses localStorage to persist:
 - All transactions
@@ -172,7 +172,7 @@ The application uses localStorage to persist:
 
 Data is automatically saved on every change and restored on app restart.
 
-## 🎨 UI/UX Design
+##  UI/UX Design
 
 ### Design Principles
 - **Clean Layout**: Organized sections with clear hierarchy
@@ -192,7 +192,7 @@ Data is automatically saved on every change and restored on app restart.
 - **Tablet**: 2-column layout
 - **Desktop**: Full 3+ column layout
 
-## 📝 Mock Data
+##  Mock Data
 
 The application includes pre-populated mock data covering:
 - Various transaction categories (Salary, Groceries, Rent, Entertainment, etc.)
@@ -217,7 +217,7 @@ The store manages:
   - `setDarkMode()`: Toggle dark mode
   - `getFilteredTransactions()`: Get filtered and sorted transactions
 
-## 🎯 Approach & Design Decisions
+##  Approach & Design Decisions
 
 ### State Management
 Chose **Zustand** over Context API or Redux because:
@@ -251,7 +251,7 @@ Components re-render with new data
 localStorage persists data
 ```
 
-## 🚀 Future Enhancements
+##  Future Enhancements
 
 Potential improvements for production:
 - Backend integration for real data
@@ -265,7 +265,7 @@ Potential improvements for production:
 - Receipt uploads
 - Multi-account support
 
-## ⚡ Performance Optimizations
+##  Performance Optimizations
 
 Current optimizations:
 - Lazy filtering to avoid unnecessary recalculations
@@ -274,7 +274,7 @@ Current optimizations:
 - CSS classes for animations instead of JS
 - Minimal re-renders with React hooks
 
-## 🐛 Known Limitations
+##  Known Limitations
 
 - Mock data is static (reset on page refresh even with localStorage)
 - No backend integration
@@ -283,24 +283,7 @@ Current optimizations:
 - No export to PDF (only CSV/JSON)
 - No transaction categories customization
 
-## 📄 License
 
-This project is open source and available for educational purposes.
-
-## 💡 Tips for Usage
-
-1. **Try switching roles**: Compare viewer vs admin experience
-2. **Test filters**: Combine multiple filters for powerful search
-3. **Export data**: Download transactions for external analysis
-4. **Dark mode**: Try both themes with different screen sizes
-5. **Responsive design**: Resize browser window to see adaptive layout
-6. **Add transactions**: Use admin role to add new entries and see how charts update
-
-## 🤝 Contributing
-
-Feel free to fork, modify, and improve this project!
-
----
 
 **Last Updated**: April 2026
 **Version**: 1.0.0
